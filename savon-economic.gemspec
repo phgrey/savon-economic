@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Savon::Economic::VERSION
   s.authors     = ["Sergey Semenov"]
   s.email       = ["phgrey@gmail.com"]
-  s.homepage    = "TODO"
+  s.homepage    = "https://github.com/phgrey/savon-economic"
   s.summary     = "Client for e-conomic.com service based on Savon"
   s.description = "ActiveRecord extension used for connecting application models with e-conomic classes"
 
