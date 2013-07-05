@@ -29,7 +29,7 @@ class Savon::Economic::Model::Base
     begin
       super
     rescue Savon::SOAPFault => ex
-      connect && super if ex.is_auth?
+      connect && super if ex.is_auth_not_logged?
     end
   end
 
