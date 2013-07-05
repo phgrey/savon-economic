@@ -26,7 +26,11 @@ class Savon::Economic::Model::Base
 
   def self.request(operation, *args)
     @@connected || (operation == :connect) || connect
-    super
+    begin
+      super
+    rescue Savon::SOAPFault => ex
+      connect && super if ex.is_auth?
+    end
   end
 
   class_attribute :id_number, instance_writer:false
