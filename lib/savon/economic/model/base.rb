@@ -49,12 +49,12 @@ class Savon::Economic::Model::Base
   end
 
   def import!
-    save from_economic get_data
+    from_economic self.class.find external_id
   end
 
-  def from_economic hash
-    self.class.from_economic hash
-  end
+  #def from_economic hash
+  #  self.class.from_economic hash
+  #end
 
   def self.all
     by_handles get_all
