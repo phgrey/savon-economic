@@ -4,12 +4,12 @@ class Savon::Economic::Model::Base
   #this is a cached copy of the https://www.e-conomic.com/secure/api1/EconomicWebservice.asmx?WSDL
   client wsdl: 'wsdls/economic.wsdl'
 
-  class_operations :connect, :disconnect
-  @@connected = false
-
   def self.config
     Settings.crm_config
   end
+
+  class_operations :connect, :disconnect
+  @@connected = false
 
   def self.connect
     connections = config.select{|k,v| [:agreement_number, :user_name, :password].include? k}
