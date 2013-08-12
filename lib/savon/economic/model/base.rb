@@ -1,6 +1,9 @@
 class Savon::Economic::Model::Base
   extend Operations
 
+  class_attribute :id_number, instance_writer:false
+  self.id_number = :number
+
   #this is a cached copy of the https://www.e-conomic.com/secure/api1/EconomicWebservice.asmx?WSDL
   client wsdl: 'wsdls/economic.wsdl'
 
@@ -29,12 +32,14 @@ class Savon::Economic::Model::Base
     begin
       super
     rescue Savon::SOAPFault => ex
-      connect && super if ex.is_auth_not_logged?
+      if ex.is_auth_not_logged?
+        connect && super
+      else
+        raise ex
+      end
     end
   end
 
-  class_attribute :id_number, instance_writer:false
-  self.id_number = :number
 
 
 
@@ -83,6 +88,7 @@ class Savon::Economic::Model::Base
   def delete!
     check_external_id! 'delete'
     self.class.delete external_id
+    update_attribute :external_id, 0
   end
 
   def self.create data
