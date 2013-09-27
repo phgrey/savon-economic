@@ -12,23 +12,25 @@ class Savon::Economic::Model::Base
   end
 
   class_operations :connect, :disconnect
-  @@connected = false
+
+  def self.connected?
+    client.globals[:headers].present? && client.globals[:headers]['cookie'].present?
+  end
 
   def self.connect
     connections = config.select{|k,v| [:agreement_number, :user_name, :password].include? k}
     super connections do |resp|
       global(:headers, { 'cookie' => resp.http.headers['set-cookie']})
     end
-    @@connected = true
   end
 
   def self.disconnect
     super
-    @@connected = false
+    client.globals.delete :headers
   end
 
   def self.request(operation, *args)
-    @@connected || (operation == :connect) || connect
+    connected? || (operation == :connect) || connect
     begin
       super
     rescue Savon::SOAPFault => ex
@@ -108,7 +110,7 @@ class Savon::Economic::Model::Base
 
   def update!
     check_external_id! 'update'
-    self.class.update for_economic
+    self.class.update for_economic.merge self_handle => {id_number => external_id}
   end
 
   def export
