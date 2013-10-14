@@ -18,6 +18,7 @@ class Savon::Economic::Model::Base
   end
 
   def self.connect
+    clean_headers
     connections = config.select{|k,v| [:agreement_number, :user_name, :password].include? k}
     super connections do |resp|
       global(:headers, { 'cookie' => resp.http.headers['set-cookie']})
@@ -26,7 +27,11 @@ class Savon::Economic::Model::Base
 
   def self.disconnect
     super
-    client.globals.delete :headers
+    clean_headers
+  end
+
+  def self.clean_headers
+    client.globals[:headers].present? &&  client.globals[:headers].delete('cookie')
   end
 
   def self.request(operation, *args)
