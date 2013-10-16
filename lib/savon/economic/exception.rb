@@ -9,7 +9,8 @@ module Savon::Economic::Exception
   end
 
   def is_auth_not_logged?
-    check_with_regexp /Economic\.Api\.Exceptions\.AuthenticationException.*User is not authenticated/
+    check_with_regexp(/Economic\.Api\.Exceptions\.AuthenticationException.*User is not authenticated/) ||
+      check_with_regexp(/Economic\.Api\.Exceptions\.AuthenticationException.*Not logged in/)
   end
 
   private
