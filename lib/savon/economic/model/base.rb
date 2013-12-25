@@ -133,4 +133,11 @@ class Savon::Economic::Model::Base
   def check_external_id! action = ''
     throw Exception.new "Can not #{action} #{self.class.name} (id=#{id}) without external_id" unless external_id?
   end
+
+  def self.remove_all
+    get_all[:product_handle].each do |h|
+      delete h[:number]
+    end
+  end
+
 end
