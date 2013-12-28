@@ -92,6 +92,10 @@ class Savon::Economic::Model::Base
     super self_handle => {id_number => id}
   end
 
+  def delete
+    self.class.delete external_id
+  end
+
   def delete!
     check_external_id! 'delete'
     self.class.delete external_id
