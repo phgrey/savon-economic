@@ -9,6 +9,8 @@ module Savon
       def client globals={}
         #we will have to convert theese tags ourselves
         globals[:convert_request_keys_to] = :none
+        globals[:log] = Rails.env == 'development'
+
         @@client ||= Savon::Client.new(globals)
       rescue Savon::InitializationError
         raise_initialization_error!

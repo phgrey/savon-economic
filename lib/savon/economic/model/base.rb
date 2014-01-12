@@ -11,6 +11,10 @@ class Savon::Economic::Model::Base
     Settings.crm_config
   end
 
+  def config
+    self.class.config
+  end
+
   class_operations :connect, :disconnect
 
   def self.connected?
