@@ -7,6 +7,9 @@ ActiveRecord::Base.send(:extend, Savon::Economic::ActiveRecord)
 module Savon
   module Economic
     extend Helper
+
+    def self.init
+      SOAPFault.send :include, Economic::Exception
+    end
   end
-  SOAPFault.send :include, Economic::Exception
 end
