@@ -8,9 +8,16 @@ module Savon::Economic::Exception
     check_with_regexp /Economic\.Api\.Exceptions\.IntegrityException/
   end
 
+#(soap:Client) Economic.Api.Exceptions.AuthenticationException(E02250): Not logged in - could not resolve authenticationContext (id=04c58cfc-9b1f-40af-ba48-b74864a3fad4)
+
   def is_auth_not_logged?
     check_with_regexp(/Economic\.Api\.Exceptions\.AuthenticationException.*User is not authenticated/) ||
       check_with_regexp(/Economic\.Api\.Exceptions\.AuthenticationException.*Not logged in/)
+  end
+
+  def is_module_stock_not_installed?
+    check_with_regexp /Economic\.Api\.Exceptions\.AuthorizationException.*To use this feature you must be authorized to use the Stock add-on module/
+
   end
 
   private

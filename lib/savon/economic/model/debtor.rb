@@ -14,7 +14,7 @@ module Savon::Economic::Model
     class_operations :get_delivery_locations, :get_debtor_contacts
     def self.delivery_locations id
       ids = get_delivery_locations(self_handle => {id_number => id})
-      ids && Savon::Economic::Model::DeliveryLocation.by_handles(ids) || []
+      ids && DeliveryLocation.by_handles(ids) || []
     end
 
     def delivery_locations
@@ -23,7 +23,7 @@ module Savon::Economic::Model
 
     def self.contacts id
       ids = get_debtor_contacts(self_handle => {id_number => id})
-      ret = ids && Savon::Economic::Model::DebtorContact.by_handles(ids) || []
+      ret = ids && DebtorContact.by_handles(ids) || []
       ret.is_a?(Array) ? ret : [ret]
     end
 
@@ -34,11 +34,42 @@ module Savon::Economic::Model
 
     class_operations :get_price_group
     def self.get_price_group id
-      super(self_handle => {id_number => id})
+      pg = super id_to_handle id
+      pg && pg[:number]
+    rescue Savon::SOAPFault => ex
+      raise ex unless ex.is_module_stock_not_installed?
+      0
     end
 
     def price_group
       self.class.get_price_group external_id
     end
+
+    def self.by_group number
+      DebtorGroup.get_debtors number
+    end
+
+
+    class_operations :get_term_of_payment
+    def self.get_term_of_payment id
+      super id_to_handle id
+    end
+
+    def term_of_payment
+      self.class.get_term_of_payment(external_id)[:id]
+    end
+
+
+    class_operations :find_by_email, :find_by_name
+    def self.by_email email
+      hnd = find_by_email(email:email)[:debtor_handle]
+      hnd && hnd[:debtor_handle]
+    end
+
+    def self.by_name name
+      hnd = find_by_name(name:name)
+      hnd && hnd[:debtor_handle]
+    end
+
   end
 end

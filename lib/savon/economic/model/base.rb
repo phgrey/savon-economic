@@ -80,6 +80,10 @@ class Savon::Economic::Model::Base
     { self_handle => ids.map{|id|{id_number => id}}}
   end
 
+  def self.id_to_handle id
+    ids_to_handles([id]).first
+  end
+
   def self.by_ids ids
     by_handles ids_to_handles ids
   end
@@ -129,10 +133,10 @@ class Savon::Economic::Model::Base
   def export
     external_id? ? update! : create!
   end
-
-  def self.id_handle id
-    {handle:{id_number => id}, id_number => id}
-  end
+  #
+  #def self.id_handle id
+  #  {handle:{id_number => id}, id_number => id}
+  #end
 
   def external_id?
     external_id.to_i > 0
@@ -146,6 +150,15 @@ class Savon::Economic::Model::Base
     get_all[:product_handle].each do |h|
       delete h[:number]
     end
+  end
+
+  instance_operations :update_from_data
+  def update data
+    update_from_data data
+  end
+
+  def self.create_empty data
+    request(:create, data)[id_number]
   end
 
 end
