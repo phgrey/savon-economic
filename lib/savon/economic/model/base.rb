@@ -8,7 +8,7 @@ class Savon::Economic::Model::Base
   client wsdl: 'wsdls/economic.wsdl'
 
   def self.config
-    Settings.crm_config
+    Rails.application.config.crm
   end
 
   def config
