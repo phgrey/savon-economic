@@ -81,7 +81,7 @@ class Savon::Economic::Model::Base
   end
 
   def self.id_to_handle id
-    ids_to_handles([id]).first
+    { self_handle => {id_number => id}}
   end
 
   def self.by_ids ids
