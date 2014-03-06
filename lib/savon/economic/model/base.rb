@@ -161,4 +161,16 @@ class Savon::Economic::Model::Base
     request(:create, data)[id_number]
   end
 
+  def self.export_all
+    local.all.map{|p|
+      begin
+        create p.for_economic
+      rescue Savon::SOAPFault => ex
+        raise ex unless ex.is_integrity?
+        false
+      end
+    }
+  end
+
+
 end
