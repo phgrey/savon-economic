@@ -22,7 +22,7 @@ module Savon
 
       def save_wsdl url
         path = Rails.root.join('tmp/wsdls/').join url.split('/').last.split('?').first
-        `wget -O #{path} -q #{url}` unless path.exist?
+        `wget -O #{path} -q --no-check-certificate #{url}` unless path.exist?
         path
       rescue
         url
