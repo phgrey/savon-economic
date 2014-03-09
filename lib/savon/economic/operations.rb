@@ -7,13 +7,25 @@ module Savon
     module Operations
 
       def client globals={}
+        @@client ||= Savon::Client.new make_globals globals
+      rescue Savon::InitializationError
+        raise_initialization_error!
+      end
+
+      def make_globals globals
         #we will have to convert theese tags ourselves
         globals[:convert_request_keys_to] = :none
         globals[:log] = Rails.env == 'development'
+        globals[:wsdl] = save_wsdl globals[:wsdl] if globals[:wsdl]
+        globals
+      end
 
-        @@client ||= Savon::Client.new(globals)
-      rescue Savon::InitializationError
-        raise_initialization_error!
+      def save_wsdl url
+        path = Rails.root.join('tmp/wsdls/').join url.split('/').last.split('?').first
+        `wget -O #{path} -q #{url}` unless path.exist?
+        path
+      rescue
+        url
       end
 
       def global(option, *value)

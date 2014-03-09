@@ -19,7 +19,7 @@ Wasabi::Parser.class_eval do
   #TODO: find less hard way to count md5 of the file
   def cache_file
     hash = Digest::MD5.hexdigest document.canonicalize
-    Rails.root.join("tmp/cache/wsdl-#{hash}.tmp")
+    Rails.root.join("tmp/wsdls/cache-#{hash}.tmp")
   end
 
   def load_parser

@@ -4,8 +4,7 @@ class Savon::Economic::Model::Base
   class_attribute :id_number, instance_writer:false
   self.id_number = :number
 
-  #this is a cached copy of the https://www.e-conomic.com/secure/api1/EconomicWebservice.asmx?WSDL
-  client wsdl: 'wsdls/economic.wsdl'
+  client wsdl: 'https://www.e-conomic.com/secure/api1/EconomicWebservice.asmx?WSDL'
 
   def self.config
     Rails.application.config.crm
