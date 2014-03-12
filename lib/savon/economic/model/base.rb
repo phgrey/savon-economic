@@ -88,7 +88,8 @@ class Savon::Economic::Model::Base
   end
 
   def self.by_handles handles
-    get_data_array(entity_handles: handles)[(snake_name+'_data').to_sym]
+    ret = get_data_array(entity_handles: handles)
+    ret && ret[(snake_name+'_data').to_sym] || []
   end
 
   def self.self_handle
