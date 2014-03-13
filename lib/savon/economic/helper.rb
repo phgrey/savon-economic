@@ -31,7 +31,6 @@ module Savon::Economic
 
     def install! components = nil
       (components || to_install.values).map{|args|cmp_install! *args}
-      Product.all.each{|p|p.remote.create! true}
     end
 
   private

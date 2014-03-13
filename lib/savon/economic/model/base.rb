@@ -134,9 +134,10 @@ class Savon::Economic::Model::Base
     external_id? ? update! : create!
   end
   #
-  #def self.id_handle id
-  #  {handle:{id_number => id}, id_number => id}
-  #end
+  def self.id_handle id
+    #{handle:{id_number => id}, id_number => id}
+    {id_number => id}
+  end
 
   def external_id?
     external_id.to_i > 0
@@ -160,17 +161,5 @@ class Savon::Economic::Model::Base
   def self.create_empty data
     request(:create, data)[id_number]
   end
-
-  def self.export_all
-    local.all.map{|p|
-      begin
-        create p.for_economic
-      rescue Savon::SOAPFault => ex
-        raise ex unless ex.is_integrity?
-        false
-      end
-    }
-  end
-
 
 end
