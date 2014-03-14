@@ -55,6 +55,13 @@ class Savon::Economic::Model::Base
 
   class_operations  :create_from_data, :get_data, :get_all, :get_data_array, :delete, :update_from_data
 
+  def self.get_data hnd
+    super(hnd).merge({status:self.name.split('::').last})
+  rescue Savon::SOAPFault => ex
+    raise ex unless ex.is_integrity?
+    nil
+  end
+
   def self.find id
     id.is_a?(Array) ? by_ids(id) : get_data(entity_handle:{id_number => id})
   end
