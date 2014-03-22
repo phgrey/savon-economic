@@ -20,6 +20,11 @@ module Savon::Economic::Exception
 
   end
 
+  def short
+    matches = /\):\ (.*?)\ \(/.match message
+    matches.nil?? message : matches[1]
+  end
+
   private
 
   def check_with_regexp reg
