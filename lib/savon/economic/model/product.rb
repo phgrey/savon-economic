@@ -4,7 +4,7 @@ module Savon::Economic::Model
     class_operations :find_by_bar_code
     def self.by_code code
       handle = find_by_bar_code bar_code:code
-      handle && by_handles([handle])
+      handle && by_handles([handle]) || []
     end
 
   end
