@@ -46,10 +46,8 @@ module Savon::Economic
       ids = [ids] unless ids.is_a? Array
       ids.each do |id|
         begin
-          class_value.find id
-        rescue Savon::SOAPFault => ex
-          raise ex if !ex.is_integrity? || default_values.nil?
-          class_value.create(class_value.id_handle(id).merge default_values)
+          res = class_value.find id
+          res || class_value.create(class_value.id_handle(id).merge default_values)
         end
       end
     end
